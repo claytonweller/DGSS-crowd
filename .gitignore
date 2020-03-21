@@ -27,9 +27,6 @@ typings/
 # Ignore VS files
 .vscode
 
-# Ignore js files (compiled typescript)
-**/*.js
-
 # Don't need the serverless compliation
 .serverless
 
