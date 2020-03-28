@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket('ws://127.0.0.1:8080');
+// const client = new W3CWebSocket('ws://127.0.0.1:8080');
+const client = new W3CWebSocket('wss://g298l0uqlc.execute-api.us-east-1.amazonaws.com/dev');
 
 class App extends React.Component {
   constructor(props) {
@@ -15,9 +16,11 @@ class App extends React.Component {
   componentWillMount() {
     client.onopen = () => {
       console.log('WebSocket Client Connected');
+      client.send(JSON.stringify({ source: 'crowd' }))
     };
     client.onmessage = (message) => {
-      const payload = JSON.parse(message.data)
+      const raw = JSON.parse(message.data)
+      const payload = raw.body
       console.log(payload)
       if (payload.count) {
         this.setState({ count: payload.count })
@@ -33,16 +36,17 @@ class App extends React.Component {
     console.log('CLICK ' + count)
 
     const payload = {
-      source: 'Crowd',
+      source: 'Control',
       count
     }
     client.send(JSON.stringify(payload))
   }
 
+
   render() {
     return (
       <div className="App" >
-        <h1>THE CROWD</h1>
+        <h1>CONTROL</h1>
         <button onClick={() => this.webClick()}>PRESS ME</button>
         <h1>Current count {this.state.count}</h1>
       </div>
