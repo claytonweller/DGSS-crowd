@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket('ws://127.0.0.1:8080');
-// const client = new W3CWebSocket('wss://g298l0uqlc.execute-api.us-east-1.amazonaws.com/dev');
+// const client = new W3CWebSocket('ws://127.0.0.1:8080');
+const client = new W3CWebSocket('wss://g298l0uqlc.execute-api.us-east-1.amazonaws.com/dev');
 
 class App extends React.Component {
   constructor(props) {
@@ -31,10 +31,9 @@ class App extends React.Component {
     };
     client.onmessage = (message) => {
       const raw = JSON.parse(message.data)
-      console.log(raw)
 
       if (raw.action === 'local-server') {
-        console.log(raw.currentConn)
+        console.log('local-server\n', raw.currentConn)
         const fakeAWSID = `${Math.floor(Math.random() * 10000)}`
         const params = {
           source: 'crowd',
@@ -43,12 +42,12 @@ class App extends React.Component {
         client.send(JSON.stringify({ action: 'connect-source', params }))
         raw.currentConn.aws_connection_id = fakeAWSID
         this.setState({ currentConn: raw.currentConn })
-      }
+      } else if (raw.action === 'conn-update') {
+        console.log('conn-update\n', raw)
+        this.setState({ currentConn: raw.params })
 
-      if (raw.action === 'conn-update') {
-        console.log(raw.currentConnection)
-        this.setState({ currentConn: raw.currentConnection })
-
+      } else {
+        console.log('CATCH ALL\n', raw)
       }
     };
   }
@@ -60,11 +59,11 @@ class App extends React.Component {
 
     console.log('CLICK ' + count)
 
-    const payload = {
+    const params = {
       source: 'crowd',
       count
     }
-    client.send(JSON.stringify(payload))
+    client.send(JSON.stringify({ action: 'all', params }))
   }
 
 
