@@ -52,8 +52,9 @@ class App extends React.Component {
     };
   }
 
-  webClick() {
-    console.log(this.state)
+  allClick() {
+    console.log('ALL CLICK')
+    console.log('STATE', this.state)
     const count = this.state.count < 5 ? this.state.count + 1 : 0
     this.setState({ count })
 
@@ -66,12 +67,25 @@ class App extends React.Component {
     client.send(JSON.stringify({ action: 'all', params }))
   }
 
+  randClick() {
+    console.log('RANDOM CLICK')
+    console.log('STATE', this.state)
+    const params = {
+      source: 'crowd',
+      id: this.state.currentConn.id
+    }
+    console.log('PARAMS', params)
+    client.send(JSON.stringify({ action: 'random', params }))
+  }
+
+
 
   render() {
     return (
       <div className="App" >
         <h1>Crowd</h1>
-        <button onClick={() => this.webClick()}>PRESS ME</button>
+        <button onClick={() => this.allClick()}>To All</button>
+        <button onClick={() => this.randClick()}>To Random</button>
         <h1>Current count {this.state.count}</h1>
         <div>{JSON.stringify(this.state.currentConn)}</div>
       </div>
