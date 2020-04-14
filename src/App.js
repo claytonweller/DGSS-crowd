@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-// const client = new W3CWebSocket('ws://127.0.0.1:8080');
-const client = new W3CWebSocket('wss://g298l0uqlc.execute-api.us-east-1.amazonaws.com/dev');
+const client = new W3CWebSocket('ws://127.0.0.1:8080');
+// const client = new W3CWebSocket('wss://g298l0uqlc.execute-api.us-east-1.amazonaws.com/dev');
 
 class App extends React.Component {
   constructor(props) {
@@ -34,13 +34,10 @@ class App extends React.Component {
 
       if (raw.action === 'local-server') {
         console.log('local-server\n', raw.currentConn)
-        const fakeAWSID = `${Math.floor(Math.random() * 10000)}`
         const params = {
-          source: 'crowd',
-          aws_connection_id: fakeAWSID
+          source: 'crowd'
         }
         client.send(JSON.stringify({ action: 'connect-source', params }))
-        raw.currentConn.aws_connection_id = fakeAWSID
         this.setState({ currentConn: raw.currentConn })
       } else if (raw.action === 'conn-update') {
         console.log('conn-update\n', raw)
@@ -78,7 +75,13 @@ class App extends React.Component {
     client.send(JSON.stringify({ action: 'random', params }))
   }
 
-
+  sourceClick() {
+    console.log('SOURCE CLICK')
+    const params = {
+      source: 'crowd',
+    }
+    client.send(JSON.stringify({ action: 'source', params }))
+  }
 
   render() {
     return (
@@ -86,8 +89,9 @@ class App extends React.Component {
         <h1>Crowd</h1>
         <button onClick={() => this.allClick()}>To All</button>
         <button onClick={() => this.randClick()}>To Random</button>
+        <button onClick={() => this.sourceClick()}>To Source</button>
         <h1>Current count {this.state.count}</h1>
-        <div>{JSON.stringify(this.state.currentConn)}</div>
+        <div style={{ width: '95vw', wordWrap: 'break-word' }}>{JSON.stringify(this.state.currentConn)}</div>
       </div>
     )
   }
