@@ -29,7 +29,7 @@ class App extends React.Component {
       client.send(JSON.stringify({ action: 'connect-source', params }))
     };
     client.onmessage = (message) => {
-      const raw = JSON.parse(message.data)
+      const raw = JSON.parse(message.data
       // We pass through the message, and the component. That way we can manage state based upon the
       // information the client gives us
       manageMessage(raw, this)
