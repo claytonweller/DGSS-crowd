@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import { WS_URL } from './config'
+
+export const client = new W3CWebSocket(WS_URL);
 
 ReactDOM.render(
   <React.StrictMode>
