@@ -3,11 +3,13 @@ import './App.css';
 import { manageMessage } from './actions';
 import { client } from './index'
 import { WebsocketTestButtons } from './components/WebsocketTestButtons';
+import { AttendeeInterface } from './components/AttendeeInterface';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      activePerformances: {},
       performance: {},
       currentConn: {
         id: "",
@@ -20,7 +22,7 @@ class App extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     client.onopen = message => {
       const params = { source: 'crowd' }
       console.log('WebSocket Client Connected\n', message);
@@ -28,11 +30,11 @@ class App extends React.Component {
       // doesn't work. So we manage that case inside of the manageMessage function
       client.send(JSON.stringify({ action: 'connect-source', params }))
     };
-    client.onmessage = (message) => {
-      const raw = JSON.parse(message.data
+    client.onmessage = async (message) => {
+      const data = JSON.parse(message.data)
       // We pass through the message, and the component. That way we can manage state based upon the
       // information the client gives us
-      manageMessage(raw, this)
+      await manageMessage(data, this)
     };
   }
 
@@ -40,7 +42,8 @@ class App extends React.Component {
     return (
       <div className="App" >
         <h1>CROWD</h1>
-        <h3>Connection_display display</h3>
+        <AttendeeInterface connection={this.state.currentConn} performances={this.state.activePerformances} />
+        <h3>Connection display</h3>
         <div style={{ width: '95vw', wordWrap: 'break-word' }}>{JSON.stringify(this.state.currentConn)}</div>
         <WebsocketTestButtons />
       </div>
