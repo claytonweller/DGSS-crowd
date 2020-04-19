@@ -1,3 +1,4 @@
-const LOCAL_DEV = process.env.LOCAL_DEV
+const LOCAL_DEV = process.env.REACT_APP_LOCAL_DEV
 const LOCAL_WS = 'ws://127.0.0.1:8080'
-export const WS_URL = LOCAL_DEV ? LOCAL_WS : (process.env.POSTGRES_URL || LOCAL_WS)
+const LAMBDA_SOCKET = process.env.REACT_APP_LAMBDA_SOCKET || LOCAL_WS
+export const WS_URL = LOCAL_DEV ? LOCAL_WS : LAMBDA_SOCKET

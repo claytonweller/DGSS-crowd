@@ -26,8 +26,8 @@ export class AttendeeInterface extends React.Component {
     let display = (<div>No shows to connect to</div>)
     console.log(activePerformances)
 
-
-    if (activePerformances && activePerformances.length && connection.performance_id === 0) {
+    console.log('PERFORMANCEID', connection.performance_id)
+    if (activePerformances && activePerformances.length) {
       const performanceOptions = activePerformances.map((p, i) => {
         return (<option value={i} key={p.id}>{p.created_at}</option>)
       })
