@@ -11,6 +11,8 @@ class App extends React.Component {
     this.state = {
       activePerformances: {},
       performance: {},
+      audAttend: {},
+      attendee: {},
       currentConn: {
         id: "",
         performance_id: 0,
@@ -38,11 +40,20 @@ class App extends React.Component {
     };
   }
 
+  setPerformance(performance) {
+    this.setState({ performance })
+  }
+
   render() {
     return (
       <div className="App" >
         <h1>CROWD</h1>
-        <AttendeeInterface connection={this.state.currentConn} performances={this.state.activePerformances} />
+        <AttendeeInterface
+          connection={this.state.currentConn}
+          activePerformances={this.state.activePerformances}
+          setPerformance={p => this.setPerformance(p)}
+          performance={this.state.performance}
+        />
         <h3>Connection display</h3>
         <div style={{ width: '95vw', wordWrap: 'break-word' }}>{JSON.stringify(this.state.currentConn)}</div>
         <WebsocketTestButtons />
