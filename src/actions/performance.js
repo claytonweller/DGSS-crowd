@@ -1,10 +1,10 @@
 export const performanceActionHash = {
   'performance-created': performanceCreatedAction,
   'performance-ended': performanceEndedAction,
-  'performance-joined': perfomanceJoinedAction
+  'performance-joined': performanceJoinedAction
 }
 
-async function perfomanceJoinedAction(params, component) {
+async function performanceJoinedAction(params, component) {
   console.log('Performance Joined\n', params)
   component.setState({ ...params })
 }

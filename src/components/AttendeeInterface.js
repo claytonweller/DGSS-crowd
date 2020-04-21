@@ -16,7 +16,7 @@ export class AttendeeInterface extends React.Component {
     const selectedPerformance = this.props.activePerformances[selectedDataIndex]
     const { audience_id, id: performance_id } = selectedPerformance
     this.props.setPerformance(selectedPerformance)
-    const payload = { action: 'join-performance', params: { audience_id, performance_id } }
+    const payload = { action: 'join-performance', params: { audience_id, performance_id, source: 'crowd' } }
     client.send(JSON.stringify(payload))
   }
 
