@@ -3,12 +3,14 @@ import './App.css';
 import { manageMessage } from './actions';
 import { client } from './index'
 import { WebsocketTestButtons } from './components/WebsocketTestButtons';
-import { AttendeeInterface } from './components/AttendeeInterface';
+import { PerformanceConnector } from './components/PerformanceConnector';
+import { Preshow } from './components/preshow';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentModule: {},
       activePerformances: {},
       performance: {},
       audAttend: {},
@@ -45,15 +47,27 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div className="App" >
-        <h1>CROWD</h1>
-        <AttendeeInterface
+    const moduleHash = {
+      preshow: <Preshow />,
+      default: (
+        <PerformanceConnector
           connection={this.state.currentConn}
           activePerformances={this.state.activePerformances}
           setPerformance={p => this.setPerformance(p)}
           performance={this.state.performance}
         />
+      )
+    }
+
+    const currentModuleTitle = this.state.currentModule.title
+    const moduleInterface = currentModuleTitle
+      ? moduleHash[currentModuleTitle]
+      : moduleHash.default
+
+    return (
+      <div className="App" >
+        <h1>CROWD</h1>
+        {moduleInterface}
         <h3>Connection display</h3>
         <div style={{ width: '95vw', wordWrap: 'break-word' }}>{JSON.stringify(this.state.currentConn)}</div>
         <WebsocketTestButtons />
