@@ -1,5 +1,6 @@
 import { performanceActionHash } from './performance'
 import { utilitiesActionHash } from './utilities'
+import { moduleActionHash } from './modules'
 
 export const manageMessage = async (message, component) => {
   let action = Object.keys(actionHash).includes(message.action)
@@ -16,6 +17,7 @@ export const manageMessage = async (message, component) => {
 const actionHash = {
   ...utilitiesActionHash,
   ...performanceActionHash,
+  ...moduleActionHash,
   defaultAction
 }
 

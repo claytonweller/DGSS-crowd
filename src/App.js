@@ -10,6 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      moduleState: {},
       currentModule: {},
       activePerformances: {},
       performance: {},
@@ -46,9 +47,28 @@ class App extends React.Component {
     this.setState({ performance })
   }
 
+  sendInteraction(action, data) {
+    const jsonData = JSON.stringify(data)
+    const payload = JSON.stringify({
+      action,
+      params: {
+        module_instance_id: this.state.currentModule.id,
+        attendee_id: this.state.attendee.id,
+        performance_id: this.state.performance.id,
+        audience_id: this.state.audAttend.audience_id,
+        module_id: this.state.currentModule.module_id,
+        data: jsonData
+      }
+    })
+    client.send(payload)
+  }
+
   render() {
     const moduleHash = {
-      preshow: <Preshow />,
+      preshow: <Preshow
+        moduleState={this.state.moduleState}
+        sendInteraction={(action, data) => this.sendInteraction(action, data)}
+      />,
       default: (
         <PerformanceConnector
           connection={this.state.currentConn}
