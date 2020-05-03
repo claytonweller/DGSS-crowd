@@ -2,15 +2,17 @@ import React from 'react';
 import './App.css';
 import { manageMessage } from './actions';
 import { client } from './index';
-import { PerformanceConnector } from './components/PerformanceConnector';
-import { Preshow } from './components/preshow';
+import { Module } from './components/modules/';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       moduleState: {},
-      currentModule: {},
+      currentModule: {
+        module: {},
+        instance: {},
+      },
       activePerformances: {},
       performance: {},
       audAttend: {},
@@ -64,30 +66,17 @@ class App extends React.Component {
   }
 
   render() {
-    const moduleHash = {
-      preshow: (
-        <Preshow
-          moduleState={this.state.moduleState}
-          sendInteraction={(action, data) => this.sendInteraction(action, data)}
-        />
-      ),
-      default: (
-        <PerformanceConnector
-          connection={this.state.currentConn}
-          activePerformances={this.state.activePerformances}
-          setPerformance={(p) => this.setPerformance(p)}
-          performance={this.state.performance}
-        />
-      ),
-    };
-
-    const currentModuleTitle = this.state.currentModule.title;
-    const moduleInterface = currentModuleTitle ? moduleHash[currentModuleTitle] : moduleHash.default;
-
     return (
       <div className="App">
         <h1>CROWD</h1>
-        {moduleInterface}
+        <Module
+          currentConn={this.state.currentConn}
+          currentModule={this.state.currentModule}
+          moduleState={this.state.moduleState}
+          activePerformances={this.state.activePerformances}
+          sendInteraction={(action, data) => this.sendInteraction(action, data)}
+          setPerformance={(p) => this.setPerformance(p)}
+        />
       </div>
     );
   }

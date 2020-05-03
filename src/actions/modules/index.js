@@ -1,7 +1,9 @@
 import { preshowActionHash } from './preshow';
+import { bootcampActionHash } from './bootcamp';
 
 export const moduleActionHash = {
   ...preshowActionHash,
+  ...bootcampActionHash,
   'start-next-module': startNextModuleAction,
 };
 
