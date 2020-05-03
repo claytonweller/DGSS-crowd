@@ -1,40 +1,31 @@
-import React from "react";
+import React from 'react';
 
 export class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      response: "",
+      response: '',
     };
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit({ event, skipText }) {
+    if (event) event.preventDefault();
     const { questionData, answered } = this.props;
     const data = {
-      response: this.state.response,
+      response: skipText ? skipText : this.state.response,
       question: questionData,
       answered,
     };
-    const action = questionData.core
-      ? "preshow-core-answer"
-      : "preshow-trivial-answer";
+    const action = questionData.core ? 'preshow-core-answer' : 'preshow-trivial-answer';
     this.props.sendInteraction(action, data);
-    this.setState({ response: "" });
+    this.setState({ response: '' });
   }
 
   multipleChoiceResponse() {
     const { choices } = this.props.questionData;
     if (choices) {
       const buttons = this.props.questionData.choices.map((c, i) => {
-        return (
-          <input
-            onClick={() => this.setState({ response: c })}
-            key={`res-${i}`}
-            type="submit"
-            value={c}
-          />
-        );
+        return <input onClick={() => this.setState({ response: c })} key={`res-${i}`} type="submit" value={c} />;
       });
       return <div>{buttons}</div>;
     }
@@ -72,16 +63,19 @@ export class Question extends React.Component {
 
   responseInterface() {
     const { responseType } = this.props.questionData;
-    if (responseType === "text") return this.textResponse();
-    if (responseType === "multiple-choice")
-      return this.multipleChoiceResponse();
-    if (responseType === "number") return this.numberResponse();
+    if (responseType === 'text') return this.textResponse();
+    if (responseType === 'multiple-choice') return this.multipleChoiceResponse();
+    if (responseType === 'number') return this.numberResponse();
   }
 
   render() {
     return (
       <div>
-        <form onSubmit={(event) => this.handleSubmit(event)}>
+        <button onClick={() => this.handleSubmit({ skipText: '-skip-' })} value="skip">
+          Skip
+        </button>
+        <form onSubmit={(event) => this.handleSubmit({ event })}>
+          <div></div>
           <label htmlFor="question">{this.props.questionData.text}</label>
           {this.responseInterface()}
         </form>

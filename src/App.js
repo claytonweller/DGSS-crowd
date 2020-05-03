@@ -1,10 +1,9 @@
-import React from "react";
-import "./App.css";
-import { manageMessage } from "./actions";
-import { client } from "./index";
-import { WebsocketTestButtons } from "./components/WebsocketTestButtons";
-import { PerformanceConnector } from "./components/PerformanceConnector";
-import { Preshow } from "./components/preshow";
+import React from 'react';
+import './App.css';
+import { manageMessage } from './actions';
+import { client } from './index';
+import { PerformanceConnector } from './components/PerformanceConnector';
+import { Preshow } from './components/preshow';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,23 +16,23 @@ class App extends React.Component {
       audAttend: {},
       attendee: {},
       currentConn: {
-        id: "",
+        id: '',
         performance_id: 0,
         attendee_id: 0,
-        aws_connection_id: "",
-        created_at: "",
-        source: "crowd",
+        aws_connection_id: '',
+        created_at: '',
+        source: 'crowd',
       },
     };
   }
 
   componentDidMount() {
     client.onopen = (message) => {
-      const params = { source: "crowd" };
-      console.log("WebSocket Client Connected\n", message);
+      const params = { source: 'crowd' };
+      console.log('WebSocket Client Connected\n', message);
       // On AWS it works to send to the client in the onOpen, but for the local service this
       // doesn't work. So we manage that case inside of the manageMessage function
-      client.send(JSON.stringify({ action: "connect-source", params }));
+      client.send(JSON.stringify({ action: 'connect-source', params }));
     };
     client.onmessage = async (message) => {
       const data = JSON.parse(message.data);
@@ -54,6 +53,7 @@ class App extends React.Component {
       params: {
         module_instance_id: this.state.currentModule.id,
         attendee_id: this.state.attendee.id,
+        attendee_name: this.state.attendee.name ? this.state.attendee.name : 'Anonymous',
         performance_id: this.state.performance.id,
         audience_id: this.state.audAttend.audience_id,
         module_id: this.state.currentModule.module_id,
@@ -82,19 +82,12 @@ class App extends React.Component {
     };
 
     const currentModuleTitle = this.state.currentModule.title;
-    const moduleInterface = currentModuleTitle
-      ? moduleHash[currentModuleTitle]
-      : moduleHash.default;
+    const moduleInterface = currentModuleTitle ? moduleHash[currentModuleTitle] : moduleHash.default;
 
     return (
       <div className="App">
         <h1>CROWD</h1>
         {moduleInterface}
-        <h3>Connection display</h3>
-        <div style={{ width: "95vw", wordWrap: "break-word" }}>
-          {JSON.stringify(this.state.currentConn)}
-        </div>
-        <WebsocketTestButtons />
       </div>
     );
   }
