@@ -53,12 +53,12 @@ class App extends React.Component {
     const payload = JSON.stringify({
       action,
       params: {
-        module_instance_id: this.state.currentModule.id,
+        module_instance_id: this.state.currentModule.instance.id,
         attendee_id: this.state.attendee.id,
         attendee_name: this.state.attendee.name ? this.state.attendee.name : 'Anonymous',
         performance_id: this.state.performance.id,
         audience_id: this.state.audAttend.audience_id,
-        module_id: this.state.currentModule.module_id,
+        module_id: this.state.currentModule.instance.module_id,
         data: jsonData,
       },
     });
