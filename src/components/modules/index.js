@@ -12,7 +12,7 @@ export function Module({
   activePerformances,
 }) {
   const moduleHash = {
-    bootcamp: <Bootcamp />,
+    bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
     preshow: <Preshow moduleState={moduleState} sendInteraction={(action, data) => sendInteraction(action, data)} />,
     default: (
       <PerformanceConnector

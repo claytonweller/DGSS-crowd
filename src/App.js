@@ -49,6 +49,7 @@ class App extends React.Component {
   }
 
   sendInteraction(action, data) {
+    console.log(action, data);
     const jsonData = JSON.stringify(data);
     const payload = JSON.stringify({
       action,
