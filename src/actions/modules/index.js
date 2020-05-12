@@ -1,7 +1,10 @@
 import { preshowActionHash } from './preshow';
 import { bootcampActionHash } from './bootcamp';
 
+import { boatraceActionHash } from './boatrace';
+
 export const moduleActionHash = {
+  ...boatraceActionHash,
   ...preshowActionHash,
   ...bootcampActionHash,
   'start-next-module': startNextModuleAction,

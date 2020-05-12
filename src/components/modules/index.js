@@ -1,4 +1,5 @@
 import React from 'react';
+import { Boatrace } from './Boatrace/';
 import { Preshow } from './preshow/';
 import { PerformanceConnector } from '../PerformanceConnector';
 import { Bootcamp } from './Bootcamp/';
@@ -12,6 +13,7 @@ export function Module({
   activePerformances,
 }) {
   const moduleHash = {
+    boatrace: <Boatrace moduleState={moduleState} />,
     bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
     preshow: <Preshow moduleState={moduleState} sendInteraction={(action, data) => sendInteraction(action, data)} />,
     default: (
