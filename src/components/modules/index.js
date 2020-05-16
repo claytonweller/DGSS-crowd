@@ -13,7 +13,7 @@ export function Module({
   activePerformances,
 }) {
   const moduleHash = {
-    boatrace: <Boatrace moduleState={moduleState} />,
+    boatrace: <Boatrace moduleState={moduleState} sendInteraction={sendInteraction} />,
     bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
     preshow: <Preshow moduleState={moduleState} sendInteraction={(action, data) => sendInteraction(action, data)} />,
     default: (

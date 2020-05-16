@@ -1,11 +1,33 @@
-
 import React from 'react';
+import { client } from '../../../';
 
-export function Boatrace({ moduleState }) {
-  return (
+export function Boatrace({ moduleState, sendInteraction }) {
+  let display = (
     <div>
-      <h3>Boatrace</h3>
-      <p>This is a module template</p>
+      <i>Look at the stage</i>
     </div>
   );
+
+  const boarding = () => {
+    const boats = moduleState.boats.map((boat, i) => {
+      return (
+        <button onClick={() => sendInteraction('boatrace-board-boat', { boatId: boat.id })} key={'boat' + i}>
+          Boat {boat.name}
+        </button>
+      );
+    });
+
+    const boatFeedback = moduleState.myBoat ? `You are in: boat #${moduleState.myBoat}` : "You aren't in a boat yet";
+    return (
+      <div>
+        <div>Pick a boat</div>
+        {boats}
+        <div>{boatFeedback}</div>
+      </div>
+    );
+  };
+
+  if (moduleState.step === 'boarding') display = boarding();
+
+  return <div>{display}</div>;
 }
