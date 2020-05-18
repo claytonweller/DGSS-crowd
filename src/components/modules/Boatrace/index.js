@@ -1,5 +1,4 @@
 import React from 'react';
-import { client } from '../../../';
 
 export function Boatrace({ moduleState, sendInteraction }) {
   let display = (
@@ -17,7 +16,9 @@ export function Boatrace({ moduleState, sendInteraction }) {
       );
     });
 
-    const boatFeedback = moduleState.myBoat ? `You are in: boat #${moduleState.myBoat}` : "You aren't in a boat yet";
+    const boatFeedback = moduleState.myBoat
+      ? `You are in: boat #${moduleState.myBoat.name}`
+      : "You aren't in a boat yet";
     return (
       <div>
         <div>Pick a boat</div>
