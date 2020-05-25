@@ -1,5 +1,4 @@
 import React from 'react';
-import { client } from '../../../';
 
 export class NameForm extends React.Component {
   constructor(props) {
@@ -13,11 +12,7 @@ export class NameForm extends React.Component {
     event.preventDefault();
     const { boat } = this.props.moduleState;
     const { name } = this.state;
-    const payload = {
-      action: 'boatrace-name-boat',
-      params: { boat, name },
-    };
-    client.send(JSON.stringify(payload));
+    this.props.sendInteraction('boatrace-name-boat', { boat, name });
   }
 
   moduleOptions() {

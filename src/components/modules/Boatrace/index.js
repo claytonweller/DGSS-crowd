@@ -62,28 +62,67 @@ export function Boatrace({ moduleState, sendInteraction }) {
   const openForNaming = () => {
     const crew = (
       <div>
-        <div>Name Your boat</div>
+        <div>Name Your Boat</div>
         <div>Give {moduleState.boat.captain_name} your ideas!</div>
       </div>
     );
 
     const coxswain = (
       <div>
-        <NameForm moduleState={moduleState} />
+        <NameForm moduleState={moduleState} sendInteraction={sendInteraction} />
       </div>
     );
 
     const role = moduleState.youAreCoxswain ? coxswain : crew;
+    const { name } = moduleState.boat;
+    const displayedName = isNaN(parseInt(name)) ? `Your Boat is named ${name}!` : `Boat #${name}`;
 
     return (
       <div>
-        <h3>{`Boat #${moduleState.boat.name}`}</h3>
+        <h3>{displayedName}</h3>
         {role}
       </div>
     );
   };
 
   if (moduleState.step === 'open-for-naming') display = openForNaming();
+
+  const namingClosed = () => {
+    return (
+      <div>
+        <h3>You are aboard</h3>
+        <h2>{moduleState.boat.name}</h2>
+      </div>
+    );
+  };
+
+  if (moduleState.step === 'naming-closed') display = namingClosed();
+
+  const racing = () => {
+    const coxswain = () => {
+      const commands = moduleState.command.map((c, i) => {
+        return (
+          <div key={c.name + i}>
+            Name: {c.name} - Rowed: {c.hasRowed ? 'Yup' : 'Not Yet'}
+          </div>
+        );
+      });
+      return <div>{commands}</div>;
+    };
+
+    const crew = <button onClick={() => sendInteraction('boatrace-stroke')}>STROKE!</button>;
+
+    const role = moduleState.command ? coxswain() : crew;
+
+    return (
+      <div>
+        <h3>RACING!</h3>
+        {role}
+      </div>
+    );
+  };
+
+  if (moduleState.step === 'racing') display = racing();
 
   return <div>{display}</div>;
 }

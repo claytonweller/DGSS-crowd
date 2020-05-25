@@ -4,6 +4,9 @@ export const boatraceActionHash = {
   'boatrace-boarding-over': boardingOverAction,
   'boatrace-coxswains-selected': coxswainsSelectedAction,
   'boatrace-open-for-naming': openForNamingAction,
+  'boatrace-boat-named': boatNamedAction,
+  'boatrace-naming-closed': closeNamingAction,
+  'boatrace-race-started': raceStartedAction,
 };
 
 function readyToBoardAction(params, component) {
@@ -47,6 +50,37 @@ function openForNamingAction(params, component) {
     moduleState: {
       ...component.state.moduleState,
       step: 'open-for-naming',
+    },
+  });
+}
+
+function boatNamedAction(params, component) {
+  component.setState({
+    moduleState: {
+      ...component.state.moduleState,
+      boat: params.boat,
+    },
+  });
+}
+
+function closeNamingAction(params, component) {
+  const boat = params.boats.filter((b) => b.id === component.state.moduleState.boat.id)[0];
+
+  component.setState({
+    moduleState: {
+      ...component.state.moduleState,
+      boat,
+      step: 'naming-closed',
+    },
+  });
+}
+
+function raceStartedAction(params, component) {
+  component.setState({
+    moduleState: {
+      ...component.state.moduleState,
+      command: params.coxswainCommand,
+      step: 'racing',
     },
   });
 }
