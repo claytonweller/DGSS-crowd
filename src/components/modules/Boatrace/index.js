@@ -110,7 +110,9 @@ export function Boatrace({ moduleState, sendInteraction }) {
       return <div>{commands}</div>;
     };
 
-    const crew = <button onClick={() => sendInteraction('boatrace-stroke')}>STROKE!</button>;
+    const crew = (
+      <button onClick={() => sendInteraction('boatrace-stroke', { boatId: moduleState.boat.id })}>STROKE!</button>
+    );
 
     const role = moduleState.command ? coxswain() : crew;
 
