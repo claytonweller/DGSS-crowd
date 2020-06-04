@@ -1,3 +1,5 @@
+import { updateModuleState } from './';
+
 export const boatraceActionHash = {
   'boatrace-ready-to-board': readyToBoardAction,
   'boatrace-boat-boarded': boatBoardedAction,
@@ -7,80 +9,72 @@ export const boatraceActionHash = {
   'boatrace-boat-named': boatNamedAction,
   'boatrace-naming-closed': closeNamingAction,
   'boatrace-race-started': raceStartedAction,
+  'boatrace-stroke-fail': strokeFailAction,
+  'boatrace-stroke-success': strokeSuccessAction,
+  'boatrace-stroke-progress': strokeProgressAction,
+  'boatrace-stroke-finish': strokeFinishAction,
+  'boatrace-race-ended': raceEndedAction,
 };
 
 function readyToBoardAction(params, component) {
-  component.setState({
-    moduleState: {
-      step: 'boarding',
-      boats: params.boats,
-    },
-  });
+  updateModuleState(component, { step: 'boarding', boats: params.boats });
 }
 
 function boatBoardedAction(params, component) {
-  component.setState({
-    moduleState: {
-      ...component.state.moduleState,
-      myBoat: params.boat,
-    },
-  });
+  updateModuleState(component, { myBoat: params.boat });
 }
 
 function boardingOverAction(params, component) {
-  component.setState({
-    moduleState: {
-      step: 'boarding-over',
-    },
-  });
+  updateModuleState(component, { step: 'boarding-over' }, true);
 }
 
 function coxswainsSelectedAction(params, component) {
-  console.log(params);
-  component.setState({
-    moduleState: {
-      step: 'meet-your-coxswain',
-      ...params,
-    },
-  });
+  updateModuleState(component, { step: 'meet-your-coxswain', ...params }, true);
 }
 
 function openForNamingAction(params, component) {
-  component.setState({
-    moduleState: {
-      ...component.state.moduleState,
-      step: 'open-for-naming',
-    },
-  });
+  updateModuleState(component, { step: 'open-for-naming' });
 }
 
 function boatNamedAction(params, component) {
-  component.setState({
-    moduleState: {
-      ...component.state.moduleState,
-      boat: params.boat,
-    },
-  });
+  updateModuleState(component, { boat: params.boat });
 }
 
 function closeNamingAction(params, component) {
   const boat = params.boats.filter((b) => b.id === component.state.moduleState.boat.id)[0];
-
-  component.setState({
-    moduleState: {
-      ...component.state.moduleState,
-      boat,
-      step: 'naming-closed',
-    },
-  });
+  updateModuleState(component, { boat, step: 'naming-closed' });
 }
 
 function raceStartedAction(params, component) {
-  component.setState({
-    moduleState: {
-      ...component.state.moduleState,
-      command: params.coxswainCommand,
-      step: 'racing',
-    },
+  updateModuleState(component, { command: params.coxswainCommand, step: 'racing' });
+}
+
+function strokeFailAction(params, component) {
+  updateModuleState(component, { command: params.coxswainCommand });
+}
+
+function strokeSuccessAction(params, component) {
+  const command = component.state.moduleState.command.map((c, i) => {
+    const status = params.boat.state.rowerStatuses[i];
+    c.hasRowed = status[c.aws_connection_id];
+    return c;
   });
+  updateModuleState(component, { boat: params.boat });
+}
+
+function strokeProgressAction(params, component) {
+  updateModuleState(component, { command: params.coxswainCommand });
+}
+
+function strokeFinishAction(params, component) {
+  updateModuleState(component, { podiumPosition: params.podiumPosition, step: 'race-ended' });
+}
+
+function raceEndedAction(params, component) {
+  const boatName = component.state.moduleState.boat.name;
+  const podiumPosition = params.podium.reduce((pos, name, i) => {
+    if (name === boatName) return i + 1;
+    return pos;
+  }, 0);
+  updateModuleState(component, { podiumPosition, step: 'race-ended' });
 }

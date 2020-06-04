@@ -126,5 +126,18 @@ export function Boatrace({ moduleState, sendInteraction }) {
 
   if (moduleState.step === 'racing') display = racing();
 
+  const raceEnded = () => {
+    return (
+      <div>
+        <h3>Race Complete!</h3>
+        <div>
+          {moduleState.boat.name} came in {moduleState.podiumPosition} place!
+        </div>
+      </div>
+    );
+  };
+
+  if (moduleState.step === 'race-ended') display = raceEnded();
+
   return <div>{display}</div>;
 }

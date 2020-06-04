@@ -21,3 +21,8 @@ function startNextModuleAction(params, component) {
     performance,
   });
 }
+
+export const updateModuleState = (component, updates, clear = false) => {
+  const moduleState = clear ? updates : { ...component.state.moduleState, ...updates };
+  component.setState({ moduleState });
+};
