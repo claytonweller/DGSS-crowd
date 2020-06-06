@@ -50,19 +50,16 @@ function raceStartedAction(params, component) {
 }
 
 function strokeFailAction(params, component) {
+  console.warn('FAIL', params.coxswainCommand);
   updateModuleState(component, { command: params.coxswainCommand });
 }
 
 function strokeSuccessAction(params, component) {
-  const command = component.state.moduleState.command.map((c, i) => {
-    const status = params.boat.state.rowerStatuses[i];
-    c.hasRowed = status[c.aws_connection_id];
-    return c;
-  });
-  updateModuleState(component, { boat: params.boat });
+  updateModuleState(component, { boat: params.boat, command: params.command });
 }
 
 function strokeProgressAction(params, component) {
+  console.warn(params.coxswainCommand);
   updateModuleState(component, { command: params.coxswainCommand });
 }
 

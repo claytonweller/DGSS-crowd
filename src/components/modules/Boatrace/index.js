@@ -103,7 +103,7 @@ export function Boatrace({ moduleState, sendInteraction }) {
       const commands = moduleState.command.map((c, i) => {
         return (
           <div key={c.name + i}>
-            Name: {c.name} - Rowed: {c.hasRowed ? 'Yup' : 'Not Yet'}
+            Name: {c.name} {c.aws_connection_id} - Rowed: {c.hasRowed ? 'Yup' : 'Not Yet'}
           </div>
         );
       });
@@ -114,7 +114,7 @@ export function Boatrace({ moduleState, sendInteraction }) {
       <button onClick={() => sendInteraction('boatrace-stroke', { boatId: moduleState.boat.id })}>STROKE!</button>
     );
 
-    const role = moduleState.command ? coxswain() : crew;
+    const role = moduleState.command && moduleState.youAreCoxswain ? coxswain() : crew;
 
     return (
       <div>
