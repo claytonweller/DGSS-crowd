@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trolly } from './Trolly/';
 import { Boatrace } from './Boatrace/';
 import { Preshow } from './preshow/';
 import { PerformanceConnector } from '../PerformanceConnector';
@@ -13,6 +14,7 @@ export function Module({
   activePerformances,
 }) {
   const moduleHash = {
+    trolly: <Trolly moduleState={moduleState} />,
     boatrace: <Boatrace moduleState={moduleState} sendInteraction={sendInteraction} />,
     bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
     preshow: <Preshow moduleState={moduleState} sendInteraction={(action, data) => sendInteraction(action, data)} />,

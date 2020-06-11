@@ -55,6 +55,7 @@ function strokeFailAction(params, component) {
 }
 
 function strokeSuccessAction(params, component) {
+  const { command } = component.state.moduleState;
   updateModuleState(component, { boat: params.boat, command: params.command });
 }
 
