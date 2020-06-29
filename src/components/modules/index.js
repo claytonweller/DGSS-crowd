@@ -14,7 +14,7 @@ export function Module({
   activePerformances,
 }) {
   const moduleHash = {
-    trolly: <Trolly moduleState={moduleState} />,
+    trolly: <Trolly moduleState={moduleState} sendInteraction={sendInteraction} />,
     boatrace: <Boatrace moduleState={moduleState} sendInteraction={sendInteraction} />,
     bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
     preshow: <Preshow moduleState={moduleState} sendInteraction={(action, data) => sendInteraction(action, data)} />,
