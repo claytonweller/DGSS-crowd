@@ -4,6 +4,7 @@ import { Boatrace } from './Boatrace/';
 import { Preshow } from './preshow/';
 import { PerformanceConnector } from '../PerformanceConnector';
 import { Bootcamp } from './Bootcamp/';
+import { DEBUG_MODE } from '../../config';
 
 export function Module({
   currentModule,
@@ -18,13 +19,15 @@ export function Module({
     boatrace: <Boatrace moduleState={moduleState} sendInteraction={sendInteraction} />,
     bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
     preshow: <Preshow moduleState={moduleState} sendInteraction={(action, data) => sendInteraction(action, data)} />,
-    default: (
+    default: DEBUG_MODE ? (
       <PerformanceConnector
         connection={currentConn}
         activePerformances={activePerformances}
         setPerformance={(p) => setPerformance(p)}
         performance={performance}
       />
+    ) : (
+      <div>Connecting to performance!</div>
     ),
   };
 

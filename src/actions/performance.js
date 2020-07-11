@@ -6,7 +6,8 @@ export const performanceActionHash = {
 
 async function performanceJoinedAction(params, component) {
   console.log('Performance Joined\n', params);
-  component.setState({ ...params });
+  localStorage.setItem('attendee', JSON.stringify(params.attendee));
+  component.setState(params);
 }
 
 // This doesn't currently DO anything, but eventually we might want to
