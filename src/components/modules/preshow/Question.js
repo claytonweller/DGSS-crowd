@@ -1,18 +1,21 @@
 import React from 'react';
+import { createGoofyName } from './createGoofyName';
 
 export class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       response: '',
+      goofyName: '',
     };
   }
 
-  handleSubmit({ event, skipText }) {
+  handleSubmit({ event, skipText, goofyName }) {
     if (event) event.preventDefault();
     const { questionData, answered } = this.props;
+    const response = this.state.response === '' ? goofyName : this.state.response;
     const data = {
-      response: skipText ? skipText : this.state.response,
+      response: skipText ? skipText : response,
       question: questionData,
       answered,
     };
@@ -68,15 +71,31 @@ export class Question extends React.Component {
     if (responseType === 'number') return this.numberResponse();
   }
 
+  labelText(goofyName) {
+    const { column, text } = this.props.questionData;
+    if (column === 'name') {
+      return (
+        <div>
+          <div>{text} If you skip this question we will call you: </div>
+          <div style={{ fontWeight: 'bold' }}>{goofyName}</div>
+        </div>
+      );
+    }
+    return <div>{text}</div>;
+  }
+
   render() {
+    const { column } = this.props.questionData;
+    let goofyName = column === 'name' ? createGoofyName() : null;
+
     return (
       <div>
-        <button onClick={() => this.handleSubmit({ skipText: '-skip-' })} value="skip">
+        <button onClick={() => this.handleSubmit({ skipText: goofyName || '-skip-' })} value="skip">
           Skip
         </button>
-        <form onSubmit={(event) => this.handleSubmit({ event })}>
+        <form onSubmit={(event) => this.handleSubmit({ event, goofyName })}>
           <div></div>
-          <label htmlFor="question">{this.props.questionData.text}</label>
+          <label htmlFor="question">{this.labelText(goofyName)}</label>
           {this.responseInterface()}
         </form>
       </div>
