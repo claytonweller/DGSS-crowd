@@ -10,9 +10,7 @@ function showQuestionsAction(params, component) {
   updateModuleState(component, { ...params, step: 'show-question' });
 }
 
-function choiceMadeAction(params, component) {
-  // TODO add some feedback that the choice has been recieved
-}
+function choiceMadeAction(params, component) {}
 
 function madnessOverAction(params, component) {
   updateModuleState(component, { complete: true }, true);

@@ -4,8 +4,7 @@ export class Disclaimer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO Set this back to 0
-      stepCount: 7,
+      stepCount: DEBUG_MODE ? 7 : 0,
       skipIsVisible: false,
       skipText: '',
     };

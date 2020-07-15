@@ -3,7 +3,10 @@ import { bootcampActionHash } from './bootcamp';
 import { boatraceActionHash } from './boatrace';
 import { trollyActionHash } from './trolly';
 
+import { tttActionHash } from './ttt';
+
 export const moduleActionHash = {
+  ...tttActionHash,
   ...trollyActionHash,
   ...boatraceActionHash,
   ...preshowActionHash,

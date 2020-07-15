@@ -1,4 +1,5 @@
 import React from 'react';
+import { Ttt } from './Ttt/';
 import { Trolly } from './Trolly/';
 import { Boatrace } from './Boatrace/';
 import { Preshow } from './preshow/';
@@ -15,6 +16,7 @@ export function Module({
   activePerformances,
 }) {
   const moduleHash = {
+    ttt: <Ttt moduleState={moduleState} />,
     trolly: <Trolly moduleState={moduleState} sendInteraction={sendInteraction} />,
     boatrace: <Boatrace moduleState={moduleState} sendInteraction={sendInteraction} />,
     bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
