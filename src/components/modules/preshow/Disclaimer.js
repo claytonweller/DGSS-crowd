@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEBUG_MODE } from '../../../config';
 
 export class Disclaimer extends React.Component {
   constructor(props) {
