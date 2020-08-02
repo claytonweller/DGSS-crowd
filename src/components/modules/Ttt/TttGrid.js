@@ -1,7 +1,6 @@
 import React from 'react';
-import Slider from '../../utilities/Slider';
 
-export function TttGrid({ moduleState }) {
+export function TttGrid({ moduleState, sendInteraction }) {
   const mockGrid = [
     [
       { X: [], O: [], locked: false, winner: '' },
@@ -20,31 +19,15 @@ export function TttGrid({ moduleState }) {
     ],
   ];
 
+  const mockState = {
+    step: 'in-progress',
+    team: 'O',
+    position: { height: 1, width: 2, team: 'O', awsId: 'b7RV8+LNrYlbTS4kDi8Yxw==' },
+    grid: mockGrid,
+  };
+
   const buildGridDisplay = (grid) => {
-    const gridHeight = grid.length;
-    const gridWidth = grid[0].length;
-    return (
-      <div style={createGridStyle(grid)}>
-        {createAllCells(grid)}
-        <div
-          style={{
-            gridArea: `1 / ${gridWidth + 1}/ ${gridHeight + 1} / ${gridWidth + 1} `,
-            backgroundColor: 'grey',
-            position: 'flex',
-          }}
-        >
-          <Slider vertical />
-        </div>
-        <div
-          style={{
-            gridArea: `${gridHeight + 1} / 1 / ${gridHeight + 1} / ${gridWidth + 1}`,
-            backgroundColor: 'grey',
-          }}
-        >
-          <Slider />
-        </div>
-      </div>
-    );
+    return <div style={createGridStyle(grid)}>{createAllCells(grid)}</div>;
   };
 
   const createGridStyle = (grid) => {
@@ -69,7 +52,6 @@ export function TttGrid({ moduleState }) {
     for (let i = 0; i < gridArray.length; i++) {
       arr.push('1fr');
     }
-    arr.push('10px');
     return arr.join(' ');
   };
 
@@ -86,11 +68,33 @@ export function TttGrid({ moduleState }) {
   };
 
   const createCell = (cellData, height, width) => {
+    const heightMatch = height === moduleState.position.height;
+    const widthMatch = width === moduleState.position.width;
+    const { team } = moduleState.position;
+    let backgroundColor = 'white';
+    let winner = cellData.winner;
+    let color = 'black';
+    if (cellData.winner) {
+      backgroundColor = 'lightgrey';
+    } else if (heightMatch && widthMatch) {
+      backgroundColor = '#606080';
+      color = 'white';
+      winner = team;
+    } else if (heightMatch || widthMatch) {
+      backgroundColor = '#ddddff';
+    }
+
+    let onClick = () => sendInteraction('ttt-choice', { height, width, team });
+    if (winner) {
+      onClick = () => console.log('Cannot Select');
+    }
+
     return (
       <div
-        key={'cell' + height + width}
+        key={`cell-${height}=${width}`}
         style={{
-          backgroundColor: 'white',
+          color,
+          backgroundColor,
           gridColumnStart: width + 1,
           gridColumnEnd: width + 2,
           gridRowStart: height + 1,
@@ -99,12 +103,13 @@ export function TttGrid({ moduleState }) {
           flexDirection: 'column',
           justifyContent: 'center',
         }}
+        onClick={onClick}
       >
-        <div style={{ fontSize: '100%' }}>{cellData.winner}</div>
+        <div style={{ fontSize: '100%' }}>{winner}</div>
       </div>
     );
   };
 
-  // return <div style={{ display: 'flex', justifyContent: 'center' }}>{JSON.stringify(moduleState)}</div>;
-  return <div style={{ display: 'flex', justifyContent: 'center' }}>{buildGridDisplay(mockGrid)}</div>;
+  return <div style={{ display: 'flex', justifyContent: 'center' }}>{buildGridDisplay(moduleState.grid)}</div>;
+  // return <div style={{ display: 'flex', justifyContent: 'center' }}>{buildGridDisplay(mockGrid)}</div>;
 }

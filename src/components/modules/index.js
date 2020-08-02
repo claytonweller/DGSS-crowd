@@ -16,7 +16,7 @@ export function Module({
   activePerformances,
 }) {
   const moduleHash = {
-    ttt: <Ttt moduleState={moduleState} />,
+    ttt: <Ttt moduleState={moduleState} sendInteraction={sendInteraction} />,
     trolly: <Trolly moduleState={moduleState} sendInteraction={sendInteraction} />,
     boatrace: <Boatrace moduleState={moduleState} sendInteraction={sendInteraction} />,
     bootcamp: <Bootcamp moduleSate={moduleState} sendInteraction={sendInteraction} />,
